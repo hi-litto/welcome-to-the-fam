@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>for my little ♡</title>
+  <meta name="description" content="you've been invited ♡" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Pacifico&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --bg: #fff3f6;
+  --bg-2: #ffe1ea;
+  --card: #fffafb;
+  --pink: #f58fb0;
+  --pink-deep: #e0648f;
+  --pink-soft: #ffd0de;
+  --ink: #5a3a46;
+  --muted: #a07b88;
+  --shadow: 0 18px 40px -18px rgba(224, 100, 143, 0.45);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: "Fredoka", system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 15% 20%, #fff 0 6%, transparent 7%) 0 0 / 120px 120px,
+    radial-gradient(circle at 70% 65%, #ffe9f0 0 5%, transparent 6%) 0 0 / 90px 90px,
+    linear-gradient(160deg, var(--bg), var(--bg-2));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* ---------- petals ---------- */
+.petals { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.petal {
+  position: absolute;
+  top: -40px;
+  width: 14px;
+  height: 18px;
+  background: var(--pink-soft);
+  border-radius: 80% 0 80% 0;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+.petal:nth-child(3n) { background: #ffc2d4; }
+.petal:nth-child(4n) { background: #fff; }
+@keyframes fall {
+  0%   { transform: translate(0, -5vh) rotate(0deg); }
+  50%  { transform: translate(40px, 50vh) rotate(180deg); }
+  100% { transform: translate(-20px, 110vh) rotate(360deg); }
+}
+
+/* ---------- cards ---------- */
+.stage {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  min-height: 480px;
+  display: grid;
+}
+.card {
+  grid-area: 1 / 1;
+  background: var(--card);
+  border: 2px dashed var(--pink-soft);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 40px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.card.active { opacity: 1; transform: none; pointer-events: auto; }
+.card[data-step="0"] { background: transparent; border: none; box-shadow: none; }
+
+h1, h2 { font-weight: 600; color: var(--pink-deep); }
+h2 { font-size: 1.7rem; }
+p { line-height: 1.5; }
+.script { font-family: "Pacifico", cursive; font-weight: 400; }
+h1.script { font-size: 2.4rem; line-height: 1.3; }
+.big { font-size: 2.2rem; }
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--pink);
+  font-weight: 500;
+}
+.muted { color: var(--muted); font-size: 0.95rem; }
+.small { font-size: 0.85rem; color: var(--muted); }
+
+/* ---------- envelope ---------- */
+.envelope {
+  position: relative;
+  width: 220px;
+  height: 150px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  animation: bob 2.4s ease-in-out infinite;
+}
+.env-body {
+  position: absolute; inset: 0;
+  background: var(--pink);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.env-body::before, .env-body::after {
+  content: "";
+  position: absolute; bottom: 0;
+  width: 0; height: 0;
+  border-bottom: 90px solid var(--pink-deep);
+  opacity: 0.35;
+}
+.env-body::before { left: 0; border-right: 110px solid transparent; }
+.env-body::after { right: 0; border-left: 110px solid transparent; }
+.env-flap {
+  position: absolute; top: 0; left: 0; z-index: 2;
+  width: 0; height: 0;
+  border-left: 110px solid transparent;
+  border-right: 110px solid transparent;
+  border-top: 85px solid #f7a6c0;
+  transform-origin: top;
+  transition: transform 0.5s ease;
+}
+.env-seal {
+  position: absolute; z-index: 3;
+  top: 62px; left: 50%;
+  transform: translateX(-50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--pink-deep);
+  font-size: 1.4rem;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 10px rgba(224, 100, 143, 0.3);
+}
+.envelope.open { animation: none; }
+.envelope.open .env-flap { transform: rotateX(180deg); }
+.hint { font-size: 1.15rem; }
+@keyframes bob { 50% { transform: translateY(-8px) rotate(-2deg); } }
+
+/* ---------- bud (subtle flower) ---------- */
+.bud { position: relative; width: 80px; height: 80px; margin-bottom: 4px; }
+.bud span {
+  position: absolute; left: 50%; top: 50%;
+  width: 30px; height: 30px; margin: -15px;
+  background: var(--pink-soft);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(calc(var(--i) * 72deg)) translateY(-18px) scale(0.2);
+  animation: open 1.4s ease forwards;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+.bud span:nth-child(1) { --i: 0; }
+.bud span:nth-child(2) { --i: 1; }
+.bud span:nth-child(3) { --i: 2; }
+.bud span:nth-child(4) { --i: 3; }
+.bud span:nth-child(5) { --i: 4; }
+.bud i {
+  position: absolute; left: 50%; top: 50%;
+  width: 18px; height: 18px; margin: -9px;
+  border-radius: 50%;
+  background: #ffd36e;
+}
+.card:not(.active) .bud span { animation: none; }
+@keyframes open {
+  to { transform: rotate(calc(var(--i) * 72deg)) translateY(-18px) scale(1); }
+}
+
+/* ---------- details ---------- */
+.details {
+  list-style: none;
+  width: 100%;
+  background: var(--bg);
+  border-radius: 18px;
+  padding: 14px 18px;
+  display: grid;
+  gap: 8px;
+}
+.details li { display: flex; justify-content: space-between; gap: 12px; text-align: right; }
+.label {
+  color: var(--pink);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  padding-top: 2px;
+}
+.tba { color: var(--muted); font-style: italic; }
+
+.countdown { display: flex; gap: 10px; margin-top: 4px; }
+.countdown div {
+  background: var(--pink);
+  color: #fff;
+  border-radius: 14px;
+  padding: 8px 10px;
+  min-width: 58px;
+}
+.countdown b { display: block; font-size: 1.3rem; font-weight: 600; }
+.countdown small { font-size: 0.7rem; letter-spacing: 0.08em; }
+
+.recap {
+  list-style: none;
+  text-align: left;
+  display: grid;
+  gap: 8px;
+  background: var(--bg);
+  border-radius: 18px;
+  padding: 14px 18px;
+  width: 100%;
+}
+.recap li { display: flex; gap: 8px; }
+.recap b { color: var(--pink-deep); font-weight: 600; flex: 0 0 72px; }
+.sig { margin-top: 6px; color: var(--muted); }
+.sig .script { color: var(--pink-deep); font-size: 1.4rem; }
+
+/* ---------- buttons ---------- */
+.actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn {
+  font: inherit;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  background: var(--pink);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px var(--pink-deep);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.btn:hover { background: var(--pink-deep); transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--pink-deep); border: 2px solid var(--pink-soft); box-shadow: none; }
+
+.controls {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+  transition: opacity 0.3s;
+}
+.controls.hidden { opacity: 0; pointer-events: none; }
+.nav {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--pink-soft);
+  background: var(--card);
+  color: var(--pink-deep);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.nav:disabled { opacity: 0.35; cursor: default; }
+.dots { display: flex; gap: 8px; }
+.dots span {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--pink-soft);
+  transition: all 0.3s;
+}
+.dots span.on { background: var(--pink-deep); width: 22px; border-radius: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .petal, .envelope { animation: none; }
+  .petals { display: none; }
+}
+</style>
+</head>
+<body>
+  <!-- drifting petals get added here by script.js -->
+  <div class="petals" aria-hidden="true"></div>
+
+  <main class="stage">
+    <!-- 0 · envelope -->
+    <section class="card active" data-step="0">
+      <button class="envelope" id="openEnvelope" aria-label="Open the letter">
+        <span class="env-flap"></span>
+        <span class="env-body"></span>
+        <span class="env-seal">♡</span>
+      </button>
+      <p class="hint">psst… you've got mail.<br /><span class="small">tap to open</span></p>
+    </section>
+
+    <!-- 1 · welcome -->
+    <section class="card" data-step="1">
+      <p class="eyebrow">a little note for</p>
+      <h1 class="script" id="littleName">our new little</h1>
+      <p>welcome to the family!! we've been waiting for you ♡</p>
+      <p class="muted">you don't know who we are yet… but you will very soon.</p>
+    </section>
+
+    <!-- 2 · teaser -->
+    <section class="card" data-step="2">
+      <div class="bud" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><i></i>
+      </div>
+      <h2>something's been growing…</h2>
+      <p>your big has been watching you this whole time (in a cute way, promise).</p>
+      <p class="muted">clear your calendar, it's almost time to bloom.</p>
+    </section>
+
+    <!-- 3 · reveal -->
+    <section class="card" data-step="3">
+      <p class="eyebrow">event 01</p>
+      <h2>the big reveal</h2>
+      <ul class="details">
+        <li><span class="label">when</span><span>sat, nov 7 · 4:00 pm</span></li>
+        <li><span class="label">where</span><span>lot 22</span></li>
+      </ul>
+      <p>your big is picking you up. come ready to meet your fam!</p>
+      <div class="countdown" id="countdown" aria-live="polite"></div>
+    </section>
+
+    <!-- 4 · dinner -->
+    <section class="card" data-step="4">
+      <p class="eyebrow">event 02 · right after</p>
+      <h2>fam dinner</h2>
+      <ul class="details">
+        <li><span class="label">when</span><span id="dinnerTime"></span></li>
+        <li><span class="label">where</span><span id="dinnerPlace"></span></li>
+      </ul>
+      <p>we're all going straight from the reveal, so come hungry and don't make other plans ♡</p>
+    </section>
+
+    <!-- 5 · pre -->
+    <section class="card" data-step="5">
+      <p class="eyebrow">event 03 · later that night</p>
+      <h2>the pre + func</h2>
+      <ul class="details">
+        <li><span class="label">when</span><span id="preTime"></span></li>
+        <li><span class="label">where</span><span id="prePlace"></span></li>
+        <li><span class="label">wear</span><span>white top · denim bottom</span></li>
+      </ul>
+      <p>we pre, then head to the func together! keep the whole night free, the fun doesn't stop after dinner.</p>
+    </section>
+
+    <!-- 6 · recap -->
+    <section class="card" data-step="6">
+      <h2 class="script big">see you saturday!</h2>
+      <ol class="recap">
+        <li><b>4:00 pm</b> big reveal · lot 22</li>
+        <li><b>after</b> fam dinner</li>
+        <li><b>later</b> the pre, then the func</li>
+        <li><b>wear</b> white top + denim bottom</li>
+      </ol>
+      <p class="muted">tl;dr: be free from 4pm onward ♡</p>
+      <div class="actions">
+        <button class="btn" id="addCal">add to calendar</button>
+        <button class="btn ghost" id="restart">read again</button>
+      </div>
+      <p class="sig">love,<br /><span class="script">your big</span> ✿</p>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Card navigation">
+    <button class="nav" id="prev" aria-label="Previous">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav" id="next" aria-label="Next">›</button>
+  </nav>
+
+  <script>
+/* ============================================================
+   EDIT ME — fill these in once dinner + pre are decided.
+   Leave as "" to show "TBA" on the site.
+   ============================================================ */
+const EVENTS = {
+  dinnerTime: "",   // e.g. "~5:30 pm"
+  dinnerPlace: "",  // e.g. "Kyoto Ramen, IV"
+  preTime: "",      // e.g. "9:00 pm"
+  prePlace: "",     // e.g. "address will be texted"
+};
+
+const REVEAL = new Date("2026-11-07T16:00:00-08:00"); // Sat 11/7, 4pm PT
+
+/* ---------- personalize: add ?to=Name to the link ---------- */
+const params = new URLSearchParams(location.search);
+const name = (params.get("to") || "").trim().slice(0, 30);
+if (name) {
+  document.getElementById("littleName").textContent = name.toLowerCase() + " ♡";
+  document.title = `for ${name} ♡`;
+}
+
+/* ---------- fill event details ---------- */
+function fill(id, value, fallback) {
+  const el = document.getElementById(id);
+  if (value) el.textContent = value;
+  else { el.textContent = fallback; el.classList.add("tba"); }
+}
+fill("dinnerTime", EVENTS.dinnerTime, "right after the reveal");
+fill("dinnerPlace", EVENTS.dinnerPlace, "TBA · we'll take you!");
+fill("preTime", EVENTS.preTime, "later that night · TBA");
+fill("prePlace", EVENTS.prePlace, "TBA · details soon");
+
+/* ---------- petals ---------- */
+const petalBox = document.querySelector(".petals");
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement("span");
+  p.className = "petal";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = 8 + Math.random() * 8 + "s";
+  p.style.animationDelay = -Math.random() * 16 + "s";
+  const s = 0.6 + Math.random() * 0.8;
+  p.style.width = 14 * s + "px";
+  p.style.height = 18 * s + "px";
+  petalBox.appendChild(p);
+}
+
+/* ---------- clickthrough ---------- */
+const cards = [...document.querySelectorAll(".card")];
+const dotsBox = document.getElementById("dots");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const controls = document.querySelector(".controls");
+let step = 0;
+
+cards.forEach((_, i) => {
+  const d = document.createElement("span");
+  d.addEventListener("click", () => go(i));
+  dotsBox.appendChild(d);
+});
+
+function go(i) {
+  step = Math.max(0, Math.min(cards.length - 1, i));
+  cards.forEach((c, j) => c.classList.toggle("active", j === step));
+  [...dotsBox.children].forEach((d, j) => d.classList.toggle("on", j === step));
+  prev.disabled = step === 0;
+  next.disabled = step === cards.length - 1;
+  controls.classList.toggle("hidden", step === 0);
+}
+
+prev.addEventListener("click", () => go(step - 1));
+next.addEventListener("click", () => go(step + 1));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") go(step + 1);
+  if (e.key === "ArrowLeft") go(step - 1);
+});
+
+// swipe on phones
+let x0 = null;
+document.addEventListener("touchstart", (e) => (x0 = e.touches[0].clientX), { passive: true });
+document.addEventListener("touchend", (e) => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 50 && step > 0) go(step + (dx < 0 ? 1 : -1));
+  x0 = null;
+});
+
+document.getElementById("openEnvelope").addEventListener("click", (e) => {
+  e.currentTarget.classList.add("open");
+  setTimeout(() => go(1), 550);
+});
+document.getElementById("restart").addEventListener("click", () => {
+  document.getElementById("openEnvelope").classList.remove("open");
+  go(0);
+});
+
+/* ---------- countdown ---------- */
+const cd = document.getElementById("countdown");
+function tick() {
+  const ms = REVEAL - new Date();
+  if (ms <= 0) {
+    cd.innerHTML = "<div><b>it's time!</b><small>head to lot 22</small></div>";
+    return;
+  }
+  const d = Math.floor(ms / 864e5);
+  const h = Math.floor((ms / 36e5) % 24);
+  const m = Math.floor((ms / 6e4) % 60);
+  const s = Math.floor((ms / 1e3) % 60);
+  cd.innerHTML = [[d, "days"], [h, "hrs"], [m, "min"], [s, "sec"]]
+    .map(([v, l]) => `<div><b>${String(v).padStart(2, "0")}</b><small>${l}</small></div>`)
+    .join("");
+}
+tick();
+setInterval(tick, 1000);
+
+/* ---------- add to calendar (.ics) ---------- */
+document.getElementById("addCal").addEventListener("click", () => {
+  const desc = [
+    "4:00 pm - big reveal at lot 22 (your big is picking you up!)",
+    "after - fam dinner" + (EVENTS.dinnerPlace ? " @ " + EVENTS.dinnerPlace : ""),
+    "later - the pre" + (EVENTS.prePlace ? " @ " + EVENTS.prePlace : "") + ", then the func",
+    "dress code: white top + denim bottom",
+    "keep the whole night free!",
+  ].join("\\n");
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//tasa fam//little invite//EN",
+    "BEGIN:VEVENT",
+    "UID:tasa-big-reveal-20261107@fam",
+    "DTSTAMP:20261105T000000Z",
+    "DTSTART:20261108T000000Z", // 4:00 pm PST
+    "DTEND:20261108T070000Z",   // 11:00 pm PST
+    "SUMMARY:big reveal + fam dinner + pre + func ♡",
+    "LOCATION:UCSB Lot 22",
+    "DESCRIPTION:" + desc,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+  const a = Object.assign(document.createElement("a"), { href: url, download: "big-reveal.ics" });
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+go(0);
+</script>
+</body>
+</html>
